@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: windHelper
+Version: 0.1.7
+Summary: encapsulate the windPy API with pandas
+Home-page: https://github.com/wangluzhou/windHelper.git
+Author: wangluzhou
+Author-email: wangluzhou@aliyun.com
+License: MIT
+Description: UNKNOWN
+Platform: UNKNOWN

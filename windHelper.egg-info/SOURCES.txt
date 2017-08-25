@@ -1,0 +1,9 @@
+setup.cfg
+setup.py
+windHelper/__init__.py
+windHelper/windHelper.py
+windHelper.egg-info/PKG-INFO
+windHelper.egg-info/SOURCES.txt
+windHelper.egg-info/dependency_links.txt
+windHelper.egg-info/top_level.txt
+windHelper.egg-info/zip-safe
