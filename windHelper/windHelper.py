@@ -5,21 +5,22 @@ import pandas as pd
 from datetime import timedelta, datetime
 
 
-"""
-常用字段：
-close
-settle
-volume
-"""
 class WindHelper(object):
+    """
+    常用字段：
+    close
+    settle
+    volume
+    """
 
-	@staticmethod
-	def getWindMultiTimeSeriesDataFrame(codeList, beginDate, endDate, para, tradingCalendar="", priceAdj="", credibility=0):
-		df_list = []
-		for code in codeList:
-			df_list.append(WindHelper.getWindTimeSeriesDataFrame(code, beginDate, endDate, para, tradingCalendar="", priceAdj="", credibility=0))
-
-
+    @staticmethod
+    def getWindMultiTimeSeriesDataFrame(codeList, beginDate, endDate, para, tradingCalendar="", priceAdj="",
+                                        credibility=0):
+        df_dict = dict()
+        for code in codeList:
+            df_dict["code"] = WindHelper.getWindTimeSeriesDataFrame(code, beginDate, endDate, para, tradingCalendar="",
+                                                                    priceAdj="", credibility=0)
+        return df_dict
 
     @staticmethod
     def getWindTimeSeriesDataFrame(code, beginDate, endDate, paraList,
@@ -128,24 +129,31 @@ class WindHelper(object):
             raise
 
     @staticmethod
-    def getWindEDBTimeSeriesDataFrame(codeList, beginDate, endDate):
+    def getWindEDBTimeSeriesDataFrame(codeList, beginDate, endDate, fillChoice="Previous"):
         """
         宏观数据提取
         get edb time series from windPy, each code represents one capture
+        : Param fillChoice: (string) previous或者None，空值数据是否需要被前一日的数据取代
         """
+        codeListStr = ",".join(codeList)
         try:
             w.start()
-            windData = w.edb(code,
-                             beginDate.strftime("%Y-%m-%d"),
-                             endDate.strftime("%Y-%m-%d"),
-                             "Fill=Previous")
+            if fillChoice == "Previous":
+                windData = w.edb(codeListStr,
+                                 beginDate.strftime("%Y-%m-%d"),
+                                 endDate.strftime("%Y-%m-%d"),
+                                 "Fill=" + fillChoice)
+            else:
+                windData = w.edb(codeListStr,
+                                 beginDate.strftime("%Y-%m-%d"),
+                                 endDate.strftime("%Y-%m-%d"))
             if len(windData.Data) == 0:
                 return None
             if len(windData.Data[0]) == 0:
                 return None
             dataDict = {}
             for i in range(len(windData.Data)):
-                dataDict[windData.Fields[i].lower()] = windData.Data[i]
+                dataDict[windData.Codes[i]] = windData.Data[i]
             df = pd.DataFrame(dataDict, index=windData.Times)
             if df.index[0].to_pydatetime().microsecond != 0:
                 df.index -= timedelta(microseconds=df.index[0].to_pydatetime().microsecond)
@@ -180,13 +188,18 @@ class WindHelper(object):
     @staticmethod
     def getAllTrsFtCodes(beginDate, endDate):
         w.start()
+        pass
+
 
 def test():
-    code = "T1612.CFE"
-    paraList = ["settle",
-                "volume"]
-    df = WindHelper.getWindTimeSeriesDataFrame(code=code, beginDate=datetime(2016,5,1),endDate=datetime(2016,12,11), paraList=paraList)
-    print(df)
+    beginDate = datetime(2008, 12, 1)
+    endDate = datetime(2017, 8, 22)
+    WindHelper.getWindEDBTimeSeriesDataFrame(["M0327992","M0062650","M0000612"], beginDate=beginDate, endDate=endDate)
+    # code = "T1612.CFE"
+    # paraList = ["settle",
+    #             "volume"]
+    # df = WindHelper.getWindTimeSeriesDataFrame(code=code, beginDate=datetime(2016,5,1),endDate=datetime(2016,12,11), paraList=paraList)
+    # print(df)
 
 
 if __name__ == "__main__":
