@@ -1,10 +1,11 @@
 Metadata-Version: 1.0
-Name: windHelper
-Version: 0.1.7
+Name: pyfi-helper
+Version: 0.1.5
 Summary: encapsulate the windPy API with pandas
-Home-page: https://github.com/wangluzhou/windHelper.git
+Home-page: https://github.com/wangluzhou/pyfi.git
 Author: wangluzhou
 Author-email: wangluzhou@aliyun.com
 License: MIT
+Description-Content-Type: UNKNOWN
 Description: UNKNOWN
 Platform: UNKNOWN
