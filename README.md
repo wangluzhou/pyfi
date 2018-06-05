@@ -1,4 +1,9 @@
 # pyfi
-# author：wangluzhou
+## 作者：wangluzhou, hupeiran
 
-将wind的WindPy接口导出的数据转换成pandas的dataframe格式，方便分析处理。
+## 本包功能：
+
+致力于宏观固收领域常用功能开发，方便大家使用和学习。
+
+
+## 相关公众号： 债圈程序猿
